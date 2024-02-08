@@ -53,15 +53,17 @@ from robotiq_3f_gripper_articulated_msgs.msg import Robotiq3FGripperRobotInput
 from robotiq_3f_gripper_articulated_msgs.msg import Robotiq3FGripperRobotOutput
 
 
-def mainLoop(address):
+def mainLoop():
+    rospy.init_node('~')
+    address = rospy.get_param('~ip_address', '192.168.131.45')
+    print("Launching S-Model Gripper Control with Address '%s'" % address)
+
     # Gripper is a 3F gripper with a TCP connection
     gripper = robotiq_3f_gripper_control.baseRobotiq3FGripper.robotiqbaseRobotiq3FGripper()
     gripper.client = robotiq_modbus_tcp.comModbusTcp.communication()
 
     # We connect to the address received as an argument
     gripper.client.connectToDevice(address)
-
-    rospy.init_node('robotiq3FGripper')
 
     # The Gripper status is published on the topic named 'Robotiq3FGripperRobotInput'
     pub = rospy.Publisher('Robotiq3FGripperRobotInput', Robotiq3FGripperRobotInput, queue_size=1)
@@ -87,7 +89,6 @@ def mainLoop(address):
 
 if __name__ == '__main__':
     try:
-        # TODO: Add verification that the argument is an IP address
-        mainLoop(sys.argv[1])
+        mainLoop()
     except rospy.ROSInterruptException:
         pass

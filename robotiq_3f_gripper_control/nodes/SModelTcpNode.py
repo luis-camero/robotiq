@@ -54,7 +54,7 @@ def mainLoop():
     rospy.init_node('~')
 
     print "Launching S-Model Gripper Control"
-    address = rospy.get_param('~ip_address', '192.168.1.19')
+    address = rospy.get_param('~ip_address', '192.168.131.45')
 
     #Gripper is a S-Model with a TCP connection
     gripper = robotiq_3f_gripper_control.baseSModel.robotiqBaseSModel()
